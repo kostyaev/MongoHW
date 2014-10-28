@@ -22,6 +22,7 @@
           <th>Лимит</th>
           <th>Заблокирован</th>
           <th>Номер карты</th>
+          <th>Действия</th>
     </tr>
 </thead>
 
@@ -34,6 +35,24 @@
         <td> ${account.limit} </td>
         <td> ${account.isBlocked?string} </td>
         <td> ${account.cardNumber} </td>
+
+
+        <td>
+            <form method="post" action="/put">
+                <input type="hidden" name="id" value="${account._id}">
+                <input type="number" name="amount" min="1" max="50000">
+                <input type="submit" value="Пополнить счет">
+            </form>
+
+             <form method="post" action="/take">
+                 <input type="hidden" name="id" value="${account._id}">
+                 <input type="number" name="amount" min="1" max="50000">
+                 <input type="submit" value="Снять со счета">
+             </form>
+
+
+        </td>
+
     </tr>
 
 </#list>

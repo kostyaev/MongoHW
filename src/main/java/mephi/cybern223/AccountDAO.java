@@ -5,6 +5,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -43,19 +44,21 @@ public class AccountDAO {
         }
     }
 
-    public boolean takeMoney(String accountId, Long ammount) {
-        BasicDBObject query = new BasicDBObject("_id", accountId);
+    public boolean takeMoney(String accountId, Long amount) {
+        System.out.println("take money, amount: " + amount);
+        BasicDBObject query = new BasicDBObject("_id", new ObjectId(accountId));
         DBObject account = accountsCollection.findOne(query);
-        Long result = parseAmmount(account.get("balance")) - ammount;
+        Long result = (Long)account.get("balance") - amount;
         if ( result < 0)
             return false;
         accountsCollection.update(query, new BasicDBObject("$set", new BasicDBObject("balance", result)));
         return true;
     }
 
-    public void putMoney(String accountId, Long ammount) {
-        BasicDBObject query = new BasicDBObject("_id", accountId);
-        accountsCollection.update(query, new BasicDBObject("$inc", new BasicDBObject("balance", ammount)));
+    public void putMoney(String accountId, Long amount) {
+        System.out.println("put money, amount: " + amount);
+        BasicDBObject query = new BasicDBObject("_id", new ObjectId(accountId));
+        accountsCollection.update(query, new BasicDBObject("$inc", new BasicDBObject("balance", amount)));
     }
 
     public List<DBObject> getAllAccounts() {
@@ -64,11 +67,6 @@ public class AccountDAO {
 
     public boolean deleteAccount() {
         return false;
-    }
-
-
-    public Long parseAmmount(Object ammount) {
-        return Long.parseLong((String) ammount);
     }
 
 }

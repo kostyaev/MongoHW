@@ -17,6 +17,7 @@ import java.io.Writer;
 import java.util.HashMap;
 
 import static spark.Spark.get;
+import static spark.Spark.post;
 import static spark.Spark.setPort;
 
 /**
@@ -86,6 +87,34 @@ public class RestaurantController {
                 root.put("accounts", accountDAO.getAllAccounts());
 
                 template.process(root, writer);
+            }
+        });
+
+        post(new FreemarkerBasedRoute("/put", "index.ftl") {
+            @Override
+            protected void doHandle(Request request, Response response, Writer writer) throws IOException, TemplateException {
+                String accountId = request.queryParams("id");
+                String amount = request.queryParams("amount");
+                System.out.println("id: " + accountId);
+                System.out.println("amount: " + amount);
+                accountDAO.putMoney(accountId, Long.parseLong(amount));
+                response.redirect("/");
+
+            }
+        });
+
+
+
+        post(new FreemarkerBasedRoute("/take", "index.ftl") {
+            @Override
+            protected void doHandle(Request request, Response response, Writer writer) throws IOException, TemplateException {
+                String accountId = request.queryParams("id");
+                String amount = request.queryParams("amount");
+                System.out.println("id: " + accountId);
+                System.out.println("amount: " + amount);
+                accountDAO.takeMoney(accountId, Long.parseLong(amount));
+                response.redirect("/");
+
             }
         });
 
