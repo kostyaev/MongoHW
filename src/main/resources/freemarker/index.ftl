@@ -27,6 +27,11 @@
 </thead>
 
 <#list accounts as account>
+    <#list account.transactions as transaction>
+         <p>
+            ${transaction.date}: Операция: ${transaction.operation}, сумма: ${transaction.amount}
+         </p>
+    </#list>
     <tr>
         <td> ${account._id} </td>
         <td> ${account.fullname} </td>

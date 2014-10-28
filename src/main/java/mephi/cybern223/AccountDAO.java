@@ -7,6 +7,9 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import org.bson.types.ObjectId;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AccountDAO {
@@ -18,8 +21,9 @@ public class AccountDAO {
     }
 
     public void createTestAccounts() {
-        if(accountsCollection.find().size() > 0)
-            return ;
+        accountsCollection.drop();
+//        if(accountsCollection.find().size() > 0)
+//            return ;
         addAccount("Napoleon", "4310 342123", 30000L, 30000L, false, "1000 2000 3000 4001");
         addAccount("Alexander", "4310 342124", 30000L, 30000L, false, "1000 2000 3000 4002");
         addAccount("Lenin", "4310 342125", 30000L, 30000L, false, "1000 2000 3000 4003");
@@ -33,7 +37,8 @@ public class AccountDAO {
                 .append("balance", balance)
                 .append("limit", limit)
                 .append("isBlocked", isBlocked)
-                .append("cardNumber", cardNumber);
+                .append("cardNumber", cardNumber)
+                .append("transactions", new ArrayList<DBObject>());
         try {
             accountsCollection.insert(account);
             return true;
@@ -50,14 +55,23 @@ public class AccountDAO {
         Long result = (Long)account.get("balance") - amount;
         if ( result < 0)
             return false;
+
+        BasicDBObject transaction = new BasicDBObject("date", getDate())
+                .append("operation", "Снятие со счета")
+                .append("amount", amount);
         accountsCollection.update(query, new BasicDBObject("$set", new BasicDBObject("balance", result)));
+        accountsCollection.update(query, new BasicDBObject("$push", new BasicDBObject("transactions", transaction)));
         return true;
     }
 
     public void putMoney(String accountId, Long amount) {
         System.out.println("put money, amount: " + amount);
         BasicDBObject query = new BasicDBObject("_id", new ObjectId(accountId));
+        BasicDBObject transaction = new BasicDBObject("date", getDate())
+                .append("operation", "Пополнение счета")
+                .append("amount", amount);
         accountsCollection.update(query, new BasicDBObject("$inc", new BasicDBObject("balance", amount)));
+        accountsCollection.update(query, new BasicDBObject("$push", new BasicDBObject("transactions", transaction)));
     }
 
     public List<DBObject> getAllAccounts() {
@@ -66,6 +80,12 @@ public class AccountDAO {
 
     public boolean deleteAccount() {
         return false;
+    }
+
+    public String getDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date now = new Date();
+        return sdf.format(now);
     }
 
 }

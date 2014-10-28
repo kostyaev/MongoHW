@@ -121,7 +121,6 @@ public class RestaurantController {
     }
 
 
-
     private Configuration createFreemarkerConfiguration() {
         Configuration retVal = new Configuration();
         retVal.setClassForTemplateLoading(RestaurantController.class, "/freemarker");
