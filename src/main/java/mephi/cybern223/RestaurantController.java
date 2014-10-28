@@ -2,7 +2,6 @@ package mephi.cybern223;
 
 
 import com.mongodb.DB;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import freemarker.template.Configuration;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.List;
 
 import static spark.Spark.get;
 import static spark.Spark.setPort;
@@ -82,9 +80,9 @@ public class RestaurantController {
         get(new FreemarkerBasedRoute("/", "index.ftl") {
             @Override
             public void doHandle(Request request, Response response, Writer writer) throws IOException, TemplateException {
-                HashMap<String, List<DBObject>> root = new HashMap<>();
+                HashMap<String, Object> root = new HashMap<>();
 
-                //root.put("what", "restaurant");
+                root.put("what", "restaurant");
                 root.put("accounts", accountDAO.getAllAccounts());
 
                 template.process(root, writer);
