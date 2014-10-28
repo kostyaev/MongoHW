@@ -41,6 +41,34 @@
 
 </table>
 
+<div id="wrapper" style="max-width: 600px; padding: 8px;">
+    <form class="form-horizontal" role="form" method="post" action="/">
+        <div class="form-group">
+            <label for="fullname" class="col-sm-2 control-label">ФИО</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="fullname" placeholder="ФИО">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="passport" class="col-sm-2 control-label">№ Пасспорта</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="passport" placeholder="Номер пасспорта">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="cardNumber" class="col-sm-2 control-label">№ Карты</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="cardNumber" placeholder="1000 0000 0000 0000">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Добавить</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 
 </body>
 </html>
