@@ -17,7 +17,6 @@ public class AccountDAO {
         accountsCollection = blogDatabase.getCollection("accounts");
     }
 
-
     public void createTestAccounts() {
         if(accountsCollection.find().size() > 0)
             return ;

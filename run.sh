@@ -1,2 +1,2 @@
-mvn compile exec:java -Dexec.mainClass=course.RestaurantController
+mvn compile exec:java -Dexec.mainClass=mephi.cybern223.RestaurantController
 
