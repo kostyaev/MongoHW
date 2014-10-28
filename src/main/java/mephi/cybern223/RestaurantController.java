@@ -103,8 +103,6 @@ public class RestaurantController {
             }
         });
 
-
-
         post(new FreemarkerBasedRoute("/take", "index.ftl") {
             @Override
             protected void doHandle(Request request, Response response, Writer writer) throws IOException, TemplateException {
@@ -118,6 +116,24 @@ public class RestaurantController {
             }
         });
 
+        post(new FreemarkerBasedRoute("/createAccount", "index.ftl") {
+            @Override
+            protected void doHandle(Request request, Response response, Writer writer) throws IOException, TemplateException {
+                String fullname = request.queryParams("fullname");
+                String passport = request.queryParams("passport");
+                String cardNumber = request.queryParams("cardNumber");
+                String balance = request.queryParams("balance");
+                String limit = request.queryParams("limit");
+                System.out.println("fullname: " + fullname);
+                System.out.println("passport: " + passport);
+                System.out.println("cardNumber: " + cardNumber);
+                System.out.println("balance: " + balance);
+                System.out.println("limit: " + limit);
+                accountDAO.addAccount(fullname, passport, Long.parseLong(balance), Long.parseLong(limit), false, cardNumber);
+                response.redirect("/");
+
+            }
+        });
     }
 
 
