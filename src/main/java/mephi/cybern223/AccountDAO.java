@@ -27,7 +27,7 @@ public class AccountDAO {
         addAccount("Hitler", "4310 342127", 30000L, 30000L, false, "1000 2000 3000 4005");
     }
 
-    public boolean addAccount(String fullname, String passport, Long balance, Long limit, boolean isBlocked, String cardNumber) {
+    public boolean addAccount(String fullname, String passport, Long balance, Long limit, Boolean isBlocked, String cardNumber) {
         BasicDBObject account = new BasicDBObject("fullname", fullname)
                 .append("passport", passport)
                 .append("balance", balance)
@@ -43,6 +43,21 @@ public class AccountDAO {
         }
     }
 
+    public boolean takeMoney(String accountId, Long ammount) {
+        BasicDBObject query = new BasicDBObject("_id", accountId);
+        DBObject account = accountsCollection.findOne(query);
+        Long result = parseAmmount(account.get("balance")) - ammount;
+        if ( result < 0)
+            return false;
+        accountsCollection.update(query, new BasicDBObject("$set", new BasicDBObject("balance", result)));
+        return true;
+    }
+
+    public void putMoney(String accountId, Long ammount) {
+        BasicDBObject query = new BasicDBObject("_id", accountId);
+        accountsCollection.update(query, new BasicDBObject("$inc", new BasicDBObject("balance", ammount)));
+    }
+
     public List<DBObject> getAllAccounts() {
         return accountsCollection.find().toArray();
     }
@@ -51,5 +66,9 @@ public class AccountDAO {
         return false;
     }
 
+
+    public Long parseAmmount(Object ammount) {
+        return Long.parseLong((String) ammount);
+    }
 
 }
