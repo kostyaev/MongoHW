@@ -56,7 +56,7 @@ public class AccountDAO {
         Long result = (Long)account.get("balance") - amount;
         BasicDBObject transaction = new BasicDBObject("date", getDate())
                 .append("amount", amount);
-        if ( result < -1000) {
+        if ( result < -1000 || (boolean) account.get("isBlocked")) {
             transaction.append("operation", "Попытка снятия со счета, не хватает средств");
             accountsCollection.update(query, new BasicDBObject("$push", new BasicDBObject("transactions", transaction)));
             return false;

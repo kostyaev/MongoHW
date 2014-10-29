@@ -47,7 +47,7 @@
 
             <div class="col-md-2">
                 <label for="submit"> </label>
-                <input type="submit" class="form-control btn btn-default" value="Добавить">
+                <input type="submit" class="form-control btn btn-default" value="Открыть счет">
             </div>
     </form>
 </div>
