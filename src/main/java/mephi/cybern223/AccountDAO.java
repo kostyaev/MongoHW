@@ -56,11 +56,13 @@ public class AccountDAO {
         Long result = (Long)account.get("balance") - amount;
         BasicDBObject transaction = new BasicDBObject("date", getDate())
                 .append("amount", amount);
-        if ( result < 0) {
+        if ( result < -1000) {
             transaction.append("operation", "Попытка снятия со счета, не хватает средств");
             accountsCollection.update(query, new BasicDBObject("$push", new BasicDBObject("transactions", transaction)));
             return false;
         }
+        if (result <= 0)
+            accountsCollection.update(query, new BasicDBObject("$set", new BasicDBObject("isBlocked", true)));
 
         transaction.append("operation", "Снятие со счета");
         accountsCollection.update(query, new BasicDBObject("$push", new BasicDBObject("transactions", transaction)));
@@ -72,10 +74,14 @@ public class AccountDAO {
     public void putMoney(String accountId, Long amount) {
         System.out.println("put money, amount: " + amount);
         BasicDBObject query = new BasicDBObject("_id", new ObjectId(accountId));
+        DBObject account = accountsCollection.findOne(query);
+        Long result = (Long)account.get("balance") + amount;
         BasicDBObject transaction = new BasicDBObject("date", getDate())
                 .append("operation", "Пополнение счета")
                 .append("amount", amount);
-        accountsCollection.update(query, new BasicDBObject("$inc", new BasicDBObject("balance", amount)));
+        if (result > 0)
+            accountsCollection.update(query, new BasicDBObject("$set", new BasicDBObject("isBlocked", false)));
+        accountsCollection.update(query, new BasicDBObject("$set", new BasicDBObject("balance", result)));
         accountsCollection.update(query, new BasicDBObject("$push", new BasicDBObject("transactions", transaction)));
     }
 

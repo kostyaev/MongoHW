@@ -16,52 +16,44 @@
 </head>
 <body>
 
-<h3>
-    Завести счёт
+<h3 style="text-align: center;">
+    Информация о счетах клиентов ресторана
 </h3>
 
-<div id="wrapper" style="max-width: 600px; padding: 8px;">
+<div id="wrapper" style="max-width: 1200px; padding: 8px; margin-top: 40px; margin-bottom: 80px;">
     <form class="form-horizontal" role="form" method="post" action="/createAccount">
-        <div class="form-group">
-            <label for="fullname" class="col-sm-2 control-label">ФИО</label>
-            <div class="col-sm-10">
+            <div class="col-md-2">
+                <label for="fullname">ФИО</label>
                 <input type="text" class="form-control" id="fullname" placeholder="ФИО" name="fullname">
             </div>
-        </div>
-        <div class="form-group">
-            <label for="passport" class="col-sm-2 control-label">Номер Пасспорта</label>
-            <div class="col-sm-10">
+            <div class="col-md-2">
+                <label for="passport">Номер паспорта</label>
                 <input type="text" class="form-control" id="passport" name="passport" placeholder="Номер пасспорта">
             </div>
-        </div>
-        <div class="form-group">
-            <label for="cardNumber" class="col-sm-2 control-label">Номер Карты</label>
-            <div class="col-sm-10">
+            <div class="col-md-2">
+
+                <label for="cardNumber">Номер Карты</label>
                 <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="1000 0000 0000 0000">
             </div>
-        </div>
-        <div class="form-group">
-            <label for="balance" class="col-sm-2 control-label">Баланс</label>
-            <div class="col-sm-10">
+             <div class="col-md-2">
+                <label for="balance">Баланс</label>
                 <input type="text" class="form-control" id="balance" name="balance" value="30000">
             </div>
-        </div>
-        <div class="form-group">
-            <label for="limit" class="col-sm-2 control-label">Лимит</label>
-            <div class="col-sm-10">
+
+            <div class="col-md-2">
+                <label for="limit">Лимит</label>
                 <input type="text" class="form-control" id="limit" name="limit" value="50000">
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Добавить</button>
+
+            <div class="col-md-2">
+                <label for="submit"> </label>
+                <input type="submit" class="form-control btn btn-default" value="Добавить">
             </div>
-        </div>
     </form>
 </div>
 
 
-<table class="table table-striped">
+<table class="table table-hover">
 <thead>
     <tr>
           <th>Номер счета</th>
@@ -76,7 +68,7 @@
 </thead>
 
 <#list accounts as account>
-    <tr>
+    <tr <#if account.isBlocked> class="danger" <#else> class="success" </#if> >
         <td> ${account._id} </td>
         <td> ${account.fullname} </td>
         <td> ${account.passport} </td>
