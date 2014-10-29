@@ -28,11 +28,11 @@
             </div>
             <div class="col-md-2">
                 <label for="passport">Номер паспорта</label>
-                <input type="text" class="form-control" id="passport" name="passport" placeholder="Номер пасспорта">
+                <input type="text" class="form-control" id="passport" name="passport" placeholder="Номер паспорта">
             </div>
             <div class="col-md-2">
 
-                <label for="cardNumber">Номер Карты</label>
+                <label for="cardNumber">Номер карты</label>
                 <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="1000 0000 0000 0000">
             </div>
              <div class="col-md-2">

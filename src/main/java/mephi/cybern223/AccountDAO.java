@@ -22,13 +22,13 @@ public class AccountDAO {
 
     public void createTestAccounts() {
         accountsCollection.drop();
-//        if(accountsCollection.find().size() > 0)
-//            return ;
-        addAccount("Napoleon", "4310 342123", 30000L, 30000L, false, "1000 2000 3000 4001");
-        addAccount("Alexander", "4310 342124", 30000L, 30000L, false, "1000 2000 3000 4002");
-        addAccount("Lenin", "4310 342125", 30000L, 30000L, false, "1000 2000 3000 4003");
-        addAccount("Stalin", "4310 342126", 30000L, 30000L, false, "1000 2000 3000 4004");
-        addAccount("Hitler", "4310 342127", 30000L, 30000L, false, "1000 2000 3000 4005");
+        if(accountsCollection.find().size() > 0)
+            return ;
+        addAccount("Соколов Никита Андреевич", "4310 342123", 30000L, 30000L, false, "1000 2000 3000 4001");
+        addAccount("Макаров Иван Васильевич", "4310 342124", 30000L, 30000L, false, "1000 2000 3000 4002");
+        addAccount("Ворожцов Андрей Петрович", "4310 342125", 30000L, 30000L, false, "1000 2000 3000 4003");
+        addAccount("Касаткин Михаил Алексеевич", "4310 342126", 30000L, 30000L, false, "1000 2000 3000 4004");
+        addAccount("Блинов Владимир Андреевич", "4310 342127", 30000L, 30000L, false, "1000 2000 3000 4005");
     }
 
     public boolean addAccount(String fullname, String passport, Long balance, Long limit, Boolean isBlocked, String cardNumber) {
