@@ -52,15 +52,20 @@ public class AccountDAO {
         System.out.println("take money, amount: " + amount);
         BasicDBObject query = new BasicDBObject("_id", new ObjectId(accountId));
         DBObject account = accountsCollection.findOne(query);
+        System.out.println("take money from account: " + account);
         Long result = (Long)account.get("balance") - amount;
-        if ( result < 0)
-            return false;
-
         BasicDBObject transaction = new BasicDBObject("date", getDate())
-                .append("operation", "Снятие со счета")
                 .append("amount", amount);
-        accountsCollection.update(query, new BasicDBObject("$set", new BasicDBObject("balance", result)));
+        if ( result < 0) {
+            transaction.append("operation", "Попытка снятия со счета, не хватает средств");
+            accountsCollection.update(query, new BasicDBObject("$push", new BasicDBObject("transactions", transaction)));
+            return false;
+        }
+
+        transaction.append("operation", "Снятие со счета");
         accountsCollection.update(query, new BasicDBObject("$push", new BasicDBObject("transactions", transaction)));
+        accountsCollection.update(query, new BasicDBObject("$set", new BasicDBObject("balance", result)));
+
         return true;
     }
 
@@ -75,7 +80,7 @@ public class AccountDAO {
     }
 
     public List<DBObject> getAllAccounts() {
-        return accountsCollection.find().toArray();
+        return accountsCollection.find().sort(new BasicDBObject("_id", -1)).toArray();
     }
 
     public boolean deleteAccount() {

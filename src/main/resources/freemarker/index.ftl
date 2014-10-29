@@ -43,13 +43,13 @@
         <div class="form-group">
             <label for="balance" class="col-sm-2 control-label">Баланс</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="balance" name="balance" placeholder="30000">
+                <input type="text" class="form-control" id="balance" name="balance" value="30000">
             </div>
         </div>
         <div class="form-group">
             <label for="limit" class="col-sm-2 control-label">Лимит</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="limit" name="limit" placeholder="50000">
+                <input type="text" class="form-control" id="limit" name="limit" value="50000">
             </div>
         </div>
         <div class="form-group">
