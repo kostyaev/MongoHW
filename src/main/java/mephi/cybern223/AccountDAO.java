@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Данный класс содержит методы взаимодействия с MongoDB для работы с БД ресторана
+ *
+ */
 public class AccountDAO {
 
     private final DBCollection accountsCollection;
@@ -20,6 +24,9 @@ public class AccountDAO {
         accountsCollection = blogDatabase.getCollection("accounts");
     }
 
+    /**
+     * Добавление тестовых данных
+     */
     public void createTestAccounts() {
         accountsCollection.drop();
         if(accountsCollection.find().size() > 0)
@@ -31,6 +38,18 @@ public class AccountDAO {
         addAccount("Блинов Владимир Андреевич", "4310 342127", 30000L, 30000L, false, "1000 2000 3000 4005");
     }
 
+
+    /**
+     * Добавление нового счета клиента ресторана
+     *
+     * @param fullname ФИО
+     * @param passport Паспорт
+     * @param balance Баланс счета
+     * @param limit Лимит счета
+     * @param isBlocked Индикатор блокировки счета
+     * @param cardNumber Номер карты
+     * @return
+     */
     public boolean addAccount(String fullname, String passport, Long balance, Long limit, Boolean isBlocked, String cardNumber) {
         BasicDBObject account = new BasicDBObject("fullname", fullname)
                 .append("passport", passport)
@@ -48,6 +67,12 @@ public class AccountDAO {
         }
     }
 
+    /**
+     * Снятие со счета accountId суммы amount
+     * @param accountId Номер аккаунта
+     * @param amount Сумма
+     * @return Результат снятия со счета: true - успешное снятие, false - неуспешное
+     */
     public boolean takeMoney(String accountId, Long amount) {
         System.out.println("take money, amount: " + amount);
         BasicDBObject query = new BasicDBObject("_id", new ObjectId(accountId));
@@ -71,6 +96,12 @@ public class AccountDAO {
         return true;
     }
 
+    /**
+     * Пополнение счета accountId на сумму amount
+     *
+     * @param accountId Номер аккаунта
+     * @param amount Сумма
+     */
     public void putMoney(String accountId, Long amount) {
         System.out.println("put money, amount: " + amount);
         BasicDBObject query = new BasicDBObject("_id", new ObjectId(accountId));
@@ -85,14 +116,19 @@ public class AccountDAO {
         accountsCollection.update(query, new BasicDBObject("$push", new BasicDBObject("transactions", transaction)));
     }
 
+    /**
+     * Получение списка всех счетов
+     *
+     * @return Список всех счетов ресторана
+     */
     public List<DBObject> getAllAccounts() {
         return accountsCollection.find().sort(new BasicDBObject("_id", -1)).toArray();
     }
 
-    public boolean deleteAccount() {
-        return false;
-    }
-
+    /**
+     * Вспомогательный метод для форматирования даты
+     * @return Дата в формате dd/MM/yy HH:mm:ss
+     */
     public String getDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date now = new Date();
